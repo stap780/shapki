@@ -1,0 +1,30 @@
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel"><%= title %></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+   	<%= search_form_for q, html: {class: '', "data-controller": "filter flatpickr", "data-turbo-frame": "table" } do |f|%> 
+		<div class="form-group">
+        <div class="row g-1 mb-2">
+          <div class="col-md-12">
+            <%= f.label :title %>
+            <%= f.search_field :title_cont_all, class: "form-control input-sm"%>
+          </div>
+          <div class="col-md-12">
+            <%= f.label :uid %>
+            <%= f.search_field :uid_eq, class: "form-control input-sm"%>
+          </div>
+          <div class="col-md-12">
+            <%= f.label :status %>
+            <%= f.select :status_eq, Product::STATUS,{prompt: "Select"}, {class: "form-select input-sm"}%>
+          </div>
+        </div>
+
+  			<div class="btn-group btn-group-sm" role="group"> 
+          <%= f.submit class: "btn btn-success btn-sm submit", data: {action: "filter#start_search", "bs-toggle":"offcanvas"}  %>
+  			</div>
+		</div>	
+    <% end %>
+  </div>
+</div>

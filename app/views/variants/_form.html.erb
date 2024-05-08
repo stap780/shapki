@@ -1,0 +1,63 @@
+<%= turbo_frame_tag dom_id(@product, dom_id(variant)) do %>
+<div class="card">
+  <div class="card-body">
+  <%= form_with(model: [@product, variant]) do |f| %>
+    <%= render 'shared/errors', object: variant %>
+    <div class="row">
+      <div class="col-2">
+        <%= f.label :status, style: "display: block" %>
+        <%= f.select :status, Variant::STATUS, {:include_blank => "Select"}, {:class => "form-select"} %>
+      </div>
+
+      <div class="col-3">
+        <%= f.label :uid%>
+        <%= f.number_field :uid, class: "form-control disabled", readonly: true, placeholder: "uid" %>
+      </div>
+
+      <div class="col-3">
+        <%= f.label :sku %>
+        <%= f.text_field :sku, class: "form-control"%>
+      </div>
+
+      <div class="col-2">
+        <%= f.label :quantity, style: "display: block" %>
+        <%= f.number_field :quantity, class: "form-control" %>
+      </div>
+
+      <div class="col-2">
+        <%= f.label :price, style: "display: block" %>
+        <%= f.text_field :price, class: "form-control"%>
+      </div>
+
+      <div class="col-12">
+        <div class="card mt-3" data-controller="image">
+            <div class="card-body">
+              <%= turbo_stream_from  dom_id(@product, dom_id(variant, :images)) %>
+              <%= turbo_frame_tag  dom_id(@product, dom_id(variant, :images)), class: "row d-flex gap-3", data: {controller: "sortable"} do %>
+                  <%= f.fields_for :images do |ff| %>
+                      <%= render  partial: "images/image", 
+                                  locals: { blob: ff.object.file, 
+                                  image_id: ff.object.id, 
+                                  image_position: ff.object.position,
+                                  product_id: @product.id,
+                                  variant_id: variant.id, f: ff } if ff.object.file.attached? %>
+                  <% end %>
+                <% end %>
+                <div class="mt-5" >
+                    <input type="file" multiple="multiple" data-direct-upload-url="<%= rails_direct_uploads_url %>" 
+                    data-action="change->image#uploadFile" data-image-target="filesInput" accept='image/*' 
+                    data-upload-url="<%= variant.new_record? ? upload_product_variants_path : upload_product_variant_images_path(variant_id: variant.id)%>" />
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="my-3 col-12 d-flex justify-content-end gap-2 align-items-center">
+          <%= f.submit class: "btn btn-primary" %>
+          <%= link_to close_icon, :back, class: "btn btn-outline-primary" %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+  </div>
+<% end %>

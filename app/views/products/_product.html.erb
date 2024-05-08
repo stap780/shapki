@@ -1,0 +1,30 @@
+
+<%= turbo_frame_tag product, class: "py-2 px-0 justify-content-between align-items-center py-2 border-top-1 border-start-0 border-end-0 row", data: { }  do %>
+    <%= tag.div('', class: "col-1") do %>
+        <%=tag.div class: 'form-check' do %>
+            <%= check_box_tag "product_ids[]", product.id, false, {class: 'checkboxes form-check-input', data: { 'selectall_target': 'checkbox', action: "change->selectall#toggleParent"}, form: :bulk_form } %>
+            <%=tag.label class: 'form-check-label' do %><%= tag.b( product.id ) %><% end %>
+        <% end %>
+    <% end %>
+    <%= tag.div(product.status, class: "col-2")%>
+    <%= tag.div(product.title, class: "col-3")%>
+    <%= tag.div(product.uid, class: "col-2")%>
+    <%= tag.div("#{product.variants.size} шт", class: "col-1")%>
+    <%= tag.div("#{product.variants_images_size} шт", class: "col-1")%>
+    <div class= "col d-flex justify-content-end gap-2 align-items-center" id="buttons-<%=product.id%>">
+      <% if product.status == "Process" %>
+        <%= render 'shared/running'%>
+      <% else %>
+        <%# link_to play_icon, run_products_path(product), class: 'px-2', data: {turbo_method: :post}, title: 'Запустить' if product.status != "Finish"%>
+            
+        <%= form_with url: run_products_path, method: :post  do |f| %>
+            <%= hidden_field_tag 'product_ids[]', product.id %>
+            <%= f.button type: :submit, class: "btn btn-outline-primary" do %>
+            <%= play_icon %>
+            <% end%>
+        <% end if product.status != "Finish" %>
+
+        <%= render 'shared/edit_delete_link', object: product %>
+      <% end %>
+    </div>
+<% end %>

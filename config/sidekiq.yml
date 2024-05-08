@@ -1,0 +1,19 @@
+:concurrency: 5
+
+:queues:
+    - default
+    - create_variant_image
+    - reconnect_image
+    - load_variants
+    - import_variant_images
+
+:scheduler:
+  :dynamic: true
+
+
+development:
+  :concurrency: 5
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 20

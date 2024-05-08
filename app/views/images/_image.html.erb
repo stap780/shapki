@@ -1,0 +1,44 @@
+<%  signed_id = blob.signed_id
+    display_name = blob.filename.to_s
+    blob_path = rails_blob_path(blob, disposition: "attachment") %>
+
+<div id="<%= signed_id %>" class="col-2 borde border-info row align-items-center image-item d-flex flex-column" 
+    data-sort-item-id="<%= image_id%>" data-sort-url="/products/<%= product_id%>/variants/<%= variant_id%>/sort_image"
+    data-signed-id="<%= signed_id %>" data-image-target="fileItem" >
+    <% if f.present? %>
+      <% img_def_url = image_id.present? ? url_for(blob.variant(:default)) : '' %>
+      <%= f.hidden_field :id %>
+      <%= f.hidden_field :file, value:  signed_id %>
+      <%= f.hidden_field :position, value:  image_position,  "data-sortable-target": "hposition" %>
+    <% else %>
+      <% img_def_url = blob.present? ? url_for(blob) : ''%>
+      <input value="<%= signed_id %>" autocomplete="off" type="hidden" name="variant[images_attributes][<%= blob.id%>][file]">
+      <input value="<%= image_position%>" autocomplete="off" type="hidden" name="variant[images_attributes][<%= blob.id%>][position]" data-sortable-target="hposition">
+    <% end %>
+    <div class="col">
+      <i class="bi bi-arrows-move js-sort-handle fs-3"></i>
+      <span class="badge bg-info float-end mt-1" data-sortable-target="position"><%= image_position%></span>
+    </div>
+    <div class="col" data-original-image-url="<%= img_def_url %>">
+      <% img = image_id.present? ? blob.variant(:thumb) : url_for(blob) %>
+      <%= image_tag img, class: 'mw-100' if blob.present? %>
+    </div>
+    <div class="col-12 mt-3">
+      <% if f.present? %>
+        <%= f.text_field :title , class: "form-control", placeholder: 'title'%>
+      <% else %>
+        <input class="form-control" placeholder="title" type="text" name="variant[images_attributes][<%= blob.id%>][title]" id="variant_images_attributes_<%= blob.id%>_title">
+      <% end %>
+    </div>
+    <div class="col-12 mb-3">
+      <% if f.present? && f.object.uid %>
+        <span class="btn disabled w-100 bg-success p-2 text-dark bg-opacity-25 border-0"><%= f.object.uid%></span>
+      <% else %>
+        <span class="btn disabled w-100 bg-danger p-2 text-dark bg-opacity-25 border-0">not sync</span>
+      <% end %>
+    </div>
+    <div class="col mt-2 d-flex justify-content-between">
+      <a href="<%= img_def_url %>" data-fancybox="gallery"><i class="bi bi-eye"></i></a>
+      <%= link_to trash_icon, delete_image_product_variants_path(blob_signed_id: signed_id, image_id: image_id), data: {  turbo_method: :post,  turbo_confirm: "Are you sure?"}  %>
+    </div>
+</div>

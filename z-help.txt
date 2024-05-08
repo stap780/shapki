@@ -1,0 +1,11 @@
+user admin app (local) - user@example.com changeme
+
+_________________
+приложение - https://app.xn--80aamqmnl4e8c.xn--p1ai
+server 45.153.70.218
+user - root
+password - cj7GKt7,7Hx4Uq
+подключение - ssh root@45.153.70.218
+
+_________________ SIDEKIQ
+bundle exec sidekiq - запуск sidekiq

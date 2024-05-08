@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @insale %>
+
+<div>
+  <%= link_to "Edit this insale", edit_insale_path(@insale) %> |
+  <%= link_to "Back to insales", insales_path %>
+
+  <%= button_to "Destroy this insale", @insale, method: :delete %>
+</div>

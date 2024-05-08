@@ -1,0 +1,25 @@
+<%= turbo_frame_tag dom_id(@product, dom_id(variant, dom_id(image))) do %>
+  <%= form_with(model: [@product, variant, image]) do |f| %>
+   <%= render 'shared/errors', object: image %>
+    <%= f.hidden_field :file %>
+
+  <div>
+    <%= f.label :uid, style: "display: block" %>
+    <%= f.number_field :uid %>
+  </div>
+  <div>
+    <%= f.label :title, style: "display: block" %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :position, style: "display: block" %>
+    <%= f.number_field :position %>
+  </div>
+
+    <%= f.hidden_field :variant_id %>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>

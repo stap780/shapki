@@ -1,0 +1,1 @@
+CREATE DATABASE shapki_production;

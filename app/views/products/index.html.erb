@@ -1,0 +1,69 @@
+
+<div class="card my-4 p-3  bg-body rounded shadow-sm">
+  <div class="card-header bg-body d-flex align-items-center justify-content-beetwen row">
+    <div class="card-info col-2">
+      <h1 class="h3 d-inline align-middle"><%= Product.model_name.human(count: 2)%></h1>
+      <br> Всего: <%=Product.all.count%>
+      <br> <%= "Выбрано: "+@products.count.to_s if @products.count != Product.all.count%>
+    </div>
+    <div class="card-info col">
+      <%= search_form_for @search, {class: 'form-inline pl-0 pr-0 z-0'} do |f| %>
+        <div class="input-group">
+          <%= f.text_field :title_cont , placeholder: 'название', class: "form-control"%>
+          <%= f.text_field :variants_barcode_cont , placeholder: 'barcode', class: "form-control"%>
+          <%# f.select :retail_client_uid_eq, Order.client_list, { :include_blank => true }, :class => "form-select"%>
+          <%= button_tag(type: 'submit', :class => "btn btn-outline-primary") do %><%= search_icon %><% end %>
+          <%= link_to arrow_clockwise_icon, products_path, class: 'btn btn-outline-dark d-flex justify-content-center align-items-center' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-4 card-actions d-grid gap-2 d-flex align-items-center justify-content-end">
+
+      <%= link_to  '#offcanvasFilter', class: 'btn btn-outline-primary position-relative', data: {bs_toggle: 'offcanvas'} do %>
+        <span><i class="bi bi-sliders2-vertical"></i></span>
+        <span class="<%#informer_class%> <% unless params[:q].present?%>d-none<% end %>" id = "filter-informer">
+          <span class="visually-hidden"></span>
+        </span>
+      <% end %>
+      <%= link_to download_icon, load_xml_data_products_path, class: 'btn btn-outline-primary', title: "'Импортировать товары из xml", data: {turbo_stream: true, 'turbo-confirm': 'Импортировать товары из xml?'} %>
+      <%= form_with url: run_products_path, method: :post, id: :bulk_form  do |f| %>
+        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "reconnect" do %>
+          <%= play_icon %>
+        <% end%>
+      <% end %>
+      <%# link_to "#{add_icon} #{Product.model_name.human}".html_safe, 
+      new_product_path, class: "btn btn-primary float-end mt-n1", data: {turbo_frame: dom_id(Product.new) } %>
+    </div>
+  </div>
+  <%= render 'filter', q: @search, title: 'Product filter' %>
+
+  <div class="card-body">
+    <div id="datatables-products_wrapper">
+        <%= turbo_frame_tag Product.new %>
+
+        <div class="col-12 list-group list-group-striped" data-controller="selectall">
+          <div class="row py-2 px-0 justify-content-between align-items-center text-start">
+            <%= div_check_box_tag_all %>
+            <%= tag.div(class: 'col-2 fw-semibold' ) do %>
+              <%= sort_link(@search, :id, '', class: "text-decoration-none text-black", style: "margin-left: -25px;") %>
+              <%= t( 'helpers.label.product.status')%>
+            <% end %>
+            <%= tag.div( t( 'helpers.label.product.title'), class: 'col-3 fw-semibold' )%>
+            <%= tag.div( t( 'helpers.label.product.uid'), class: 'col-2 fw-semibold' )%>
+            <%= tag.div( t( 'Вар'), class: 'col-1 fw-semibold' )%>
+            <%= tag.div( t( 'Кар'), class: 'col-1 fw-semibold' )%>
+            <%= tag.div('', class: 'col fw-semibold')%>
+          </div>
+          <%= turbo_stream_from "products" %>
+          <%= turbo_frame_tag 'products', data: { } do %>
+              <%= render @products %>
+          <% end %>
+        </div>
+
+      <div class="row paginate-wrap mt-4">
+        <%= render "shared/paginate", f: @products %>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,3 @@
+<% data = object.class == Product.new.class ? {turbo_frame: "_top"} : {}%>
+<%= link_to edit_icon, edit_polymorphic_path(object), class: "", data: data %>
+<%= link_to trash_icon, object, data: { "turbo-method": :delete, 'turbo-confirm': 'Are you sure?' }, class:"" %>

@@ -1,0 +1,38 @@
+
+
+<main class="p-0">
+	<div class="card">
+		<div class="card-header text-center bg-transparent border-bottom-0">
+			<h1 class="h2">Войти</h1>
+		</div>
+		<div class="card-body">
+			<div class="m-sm-4">
+				<%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+					<%= render "devise/shared/error_messages", resource: resource %>
+					<div class="mb-3">
+						<%= f.email_field :email, autocomplete: "email" , class: "form-control form-control-lg", placeholder: "Email address"%>
+					</div>
+					<div class="mb-3">
+						<%= f.password_field :password, class: "form-control form-control-lg", placeholder: "Password" %>
+						<small><%# link_to "Забыли пароль?", new_user_password_path %></small>
+					</div>
+					<div>
+					<label class="form-check d-none">
+						<%= f.label :remember_me, class: "form-check-label"  %>
+						<%= f.check_box :remember_me, class: "form-check-input" %>
+					</label>
+					</div>
+					<div class="text-center mt-3">
+						<%= f.submit "Поехали!", class: "btn btn-lg btn-primary"%>
+					</div>
+					<%#tag.div class: "text-center mt-3" do %>
+					<%#tag.span class: "mb-0 undefined" do %>
+						<%#tag.span('Нужна регистрация?') %>
+						<%# link_to " конечно )", new_user_registration_path%>
+					<%# end %>
+					<%# end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</main>

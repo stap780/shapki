@@ -1,0 +1,66 @@
+<%= turbo_stream_from product if !product.new_record?%>
+<%= turbo_frame_tag product do %>
+  <%= form_with(model: product) do |f| %>
+
+    <%= render "shared/errors", object: product %>
+      <div class="card my-4">
+        <div class="card-header d-flex justify-content-between bg-transparent">
+          <div class="h1">
+            <%= link_to caret_left_icon, products_path, class: "btn btn-outline-success btn-sm", data: {turbo_frame: "_top"} %>
+            <%= title%> 
+            <span class="fs-4"><%=link_to box_arrow_up_right_icon, "https://myshop-bcp747.myinsales.ru/admin2/products/#{product.uid}", target: "_blank" %></span>
+          </div>
+          <div class="d-flex justify-content-end gap-2 align-items-center">
+            <%= f.submit class: "btn btn-primary", data: {turbo_frame: "_top"}%>
+            <%= link_to close_icon, :back, class: "btn btn-outline-primary", data: {turbo_frame: "_top"} %>
+          </div>
+        </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-2">
+                <%= f.select :status, Product::STATUS, {:include_blank => "Select"}, {:class => "form-select"} %>
+              </div>
+              <div class="col">
+                <%= f.text_field :title, class: "form-control disabled", readonly: true, placeholder: "title" %>
+              </div>
+              <div class="col-3">
+                <%= f.number_field :uid, class: "form-control disabled", readonly: true, placeholder: "uid" %>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-12 my-3 gap-3">
+                <%# link_to new_product_variant_path(product), class: "btn btn-outline-primary float-start", data: {turbo_frame: dom_id(product, dom_id(Variant.new)) }, title: "New variant" do %>
+                    <%# add_icon %>
+                <%# end if !product.new_record? %>
+                <%= link_to load_variants_product_path(product), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_stream: true }, title: "Download variants" do %>
+                    <%= download_icon %>
+                <% end if !product.new_record? %>
+              </div>
+              <div class="col-12">
+              <%= turbo_stream_from product, :variants if !product.new_record? %>
+              <div class="col-12">
+                  <%= turbo_frame_tag dom_id(product, dom_id(Variant.new)) %>
+              </div>
+              <% if @product.variants %>
+                <div class="row justify-content-between align-items-center px-2 py-2">
+                  <%= tag.div("", class: "col-1 fw-bold")%>
+                  <%= tag.div("status", class: "col-1 fw-bold")%>
+                  <%= tag.div("uid", class: "col-2 fw-bold")%>
+                  <%= tag.div("", class: "col-2 fw-bold")%>
+                  <%= tag.div("qt", class: "col-1 fw-bold")%>
+                  <%= tag.div("price", class: "col-2 fw-bold")%>
+                  <%= tag.div("img", class: "col-1 fw-bold")%>
+                  <%= tag.div("", class: "col")%>
+                </div>
+              <% end %>
+              <%= turbo_frame_tag product, :variants, data: { } do %>
+                  <% @variants.each do |variant|%>
+                      <%= render partial: "variants/variant", locals: { variant: variant, product: product } %>
+                  <% end if !product.new_record? %>
+              <% end %>
+              </div>
+            </div>
+          </div>
+      </div>
+  <% end %>
+<% end %>
