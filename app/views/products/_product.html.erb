@@ -17,9 +17,9 @@
       <% else %>
         <%# link_to play_icon, run_products_path(product), class: 'px-2', data: {turbo_method: :post}, title: 'Запустить' if product.status != "Finish"%>
             
-        <%= form_with url: run_products_path, method: :post  do |f| %>
+        <%= form_with url: run_products_path, method: :post, title: "соединить"  do |f| %>
             <%= hidden_field_tag 'product_ids[]', product.id %>
-            <%= f.button type: :submit, class: "btn btn-outline-primary" do %>
+            <%= f.button type: :submit, class: "btn btn-outline-secondary btn-sm" do %>
             <%= play_icon %>
             <% end%>
         <% end if product.status != "Finish" %>

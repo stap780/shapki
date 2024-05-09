@@ -18,8 +18,8 @@
           <%# download_icon %>
         <%# end%>
       <%# end %>
-      <%= link_to download_icon, load_images_product_variant_path(product, variant, variant_ids: [variant.id] ), data: { "turbo-method": :get, 'turbo-confirm': 'Download images?', turbo_stream: true }, class:"btn btn-sm btn-outline-secondary" %>
-      <%= link_to arrow_right_icon, run_product_variants_path(product, variant_ids: [variant.id] ), data: { "turbo-method": :post, 'turbo-confirm': 'Загрузить картинки в магазин?' }, class:"btn btn-sm btn-outline-secondary" %>
+      <%= link_to download_icon, load_images_product_variant_path(product, variant, variant_ids: [variant.id] ), title: "Импортировать картинки", data: { "turbo-method": :get, 'turbo-confirm': 'Импортировать картинки?', turbo_stream: true }, class:"btn btn-sm btn-outline-secondary" %>
+      <%= link_to arrow_right_icon, run_product_variants_path(product, variant_ids: [variant.id] ), title: "Экспортировать картинки", data: { "turbo-method": :post, 'turbo-confirm': 'Экспортировать картинки в магазин?' }, class:"btn btn-sm btn-outline-secondary" %>
 
       <%= link_to edit_icon, [:edit, product, variant], class: '' %>
       <%= link_to trash_icon, [product,variant], data: { "turbo-method": :delete, 'turbo-confirm': 'Are you sure?' }, class:"" %>

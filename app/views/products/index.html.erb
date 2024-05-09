@@ -27,7 +27,7 @@
       <% end %>
       <%= link_to download_icon, load_xml_data_products_path, class: 'btn btn-outline-primary', title: "'Импортировать товары из xml", data: {turbo_stream: true, 'turbo-confirm': 'Импортировать товары из xml?'} %>
       <%= form_with url: run_products_path, method: :post, id: :bulk_form  do |f| %>
-        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "reconnect" do %>
+        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "соединить" do %>
           <%= play_icon %>
         <% end%>
       <% end %>

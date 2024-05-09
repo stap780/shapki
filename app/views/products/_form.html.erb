@@ -32,7 +32,7 @@
                 <%# link_to new_product_variant_path(product), class: "btn btn-outline-primary float-start", data: {turbo_frame: dom_id(product, dom_id(Variant.new)) }, title: "New variant" do %>
                     <%# add_icon %>
                 <%# end if !product.new_record? %>
-                <%= link_to load_variants_product_path(product), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_stream: true }, title: "Download variants" do %>
+                <%= link_to load_variants_product_path(product), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_stream: true }, title: "Загрузить варианты" do %>
                     <%= download_icon %>
                 <% end if !product.new_record? %>
               </div>
