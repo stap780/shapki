@@ -12,7 +12,7 @@ require 'capistrano/rails/console'
 
 require "capistrano/puma"
 install_plugin Capistrano::Puma
-install_plugin Capistrano::Puma::Systemd
+# install_plugin Capistrano::Puma::Systemd
 
 require 'capistrano/sidekiq'
 # install_plugin Capistrano::Sidekiq
