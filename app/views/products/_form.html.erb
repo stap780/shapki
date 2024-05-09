@@ -11,6 +11,11 @@
             <span class="fs-4"><%=link_to box_arrow_up_right_icon, "https://myshop-bcp747.myinsales.ru/admin2/products/#{product.uid}", target: "_blank" %></span>
           </div>
           <div class="d-flex justify-content-end gap-2 align-items-center">
+            <%= link_to load_variants_product_path(product), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_stream: true }, title: "Загрузить варианты" do %>
+                <%= download_icon %>
+            <% end if !product.new_record? %>
+          </div>
+          <div class="d-flex justify-content-end gap-2 align-items-center">
             <%= f.submit class: "btn btn-primary", data: {turbo_frame: "_top"}%>
             <%= link_to close_icon, :back, class: "btn btn-outline-primary", data: {turbo_frame: "_top"} %>
           </div>
@@ -28,14 +33,6 @@
               </div>
             </div>
             <div class="row mt-2">
-              <div class="col-12 my-3 gap-3">
-                <%# link_to new_product_variant_path(product), class: "btn btn-outline-primary float-start", data: {turbo_frame: dom_id(product, dom_id(Variant.new)) }, title: "New variant" do %>
-                    <%# add_icon %>
-                <%# end if !product.new_record? %>
-                <%= link_to load_variants_product_path(product), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_stream: true }, title: "Загрузить варианты" do %>
-                    <%= download_icon %>
-                <% end if !product.new_record? %>
-              </div>
               <div class="col-12">
               <%= turbo_stream_from product, :variants if !product.new_record? %>
               <div class="col-12">
@@ -43,7 +40,7 @@
               </div>
               <% if @product.variants %>
                 <div class="row justify-content-between align-items-center px-2 py-2">
-                  <%= tag.div("", class: "col-1 fw-bold")%>
+                  <%= tag.div("#", class: "col-1 fw-bold text-center")%>
                   <%= tag.div("status", class: "col-1 fw-bold")%>
                   <%= tag.div("uid", class: "col-2 fw-bold")%>
                   <%= tag.div("", class: "col-2 fw-bold")%>
