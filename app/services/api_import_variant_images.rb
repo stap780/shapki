@@ -93,7 +93,7 @@ class ApiImportVariantImages < ApplicationService
         puts clear_url
         file = nil
       else
-        tempfile = ImageProcessing::MiniMagick.source(file.path).saver!(quality: 90)
+        tempfile = ImageProcessing::Vips.source(file.path).saver!(quality: 90)
       end
     end
   

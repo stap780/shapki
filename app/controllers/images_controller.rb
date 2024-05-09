@@ -73,7 +73,7 @@ class ImagesController < ApplicationController
       puts "upload_blob ======= upload_blob"
       puts "tempfile.path"
       puts tempfile.path
-      ImageProcessing::MiniMagick.source(tempfile.path).saver!(quality: 90)
+      ImageProcessing::Vips.source(tempfile.path).saver!(quality: 90)
     end
 
     new_blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: filename)
