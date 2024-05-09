@@ -103,7 +103,8 @@ class ProductsController < ApplicationController
       flash.now[:success] = t(".success")
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.update('modal',template: "shared/pending")
+          turbo_stream.update('modal',template: "shared/pending"),
+          render_turbo_flash
         ]
       end
     end

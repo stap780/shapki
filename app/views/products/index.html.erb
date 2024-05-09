@@ -10,7 +10,7 @@
       <%= search_form_for @search, {class: 'form-inline pl-0 pr-0 z-0'} do |f| %>
         <div class="input-group">
           <%= f.text_field :title_cont , placeholder: 'название', class: "form-control"%>
-          <%= f.text_field :variants_barcode_cont , placeholder: 'barcode', class: "form-control"%>
+          <%= f.text_field :variants_barcode_cont , placeholder: 'штрихкод', class: "form-control"%>
           <%# f.select :retail_client_uid_eq, Order.client_list, { :include_blank => true }, :class => "form-select"%>
           <%= button_tag(type: 'submit', :class => "btn btn-outline-primary") do %><%= search_icon %><% end %>
           <%= link_to arrow_clockwise_icon, products_path, class: 'btn btn-outline-dark d-flex justify-content-center align-items-center' %>
@@ -45,7 +45,7 @@
           <div class="row py-2 px-0 justify-content-between align-items-center text-start">
             <%= div_check_box_tag_all %>
             <%= tag.div(class: 'col-2 fw-semibold' ) do %>
-              <%= sort_link(@search, :id, '', class: "text-decoration-none text-black", style: "margin-left: -25px;") %>
+              <%= sort_link(@search, :id, '', class: "text-decoration-none text-black margin-negative-left") %>
               <%= t( 'helpers.label.product.status')%>
             <% end %>
             <%= tag.div( t( 'helpers.label.product.title'), class: 'col-3 fw-semibold' )%>
