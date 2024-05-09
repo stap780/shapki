@@ -15,7 +15,7 @@ set :deploy_to,       "/var/www/#{fetch(:application)}"
 set :puma_access_log, "#{release_path}/log/puma.access.log"
 set :puma_error_log,  "#{release_path}/log/puma.error.log"
 set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_rsa.pub) }
-set :puma_enable_socket_service, true
+# set :puma_enable_socket_service, true
 
 append :linked_files, "config/master.key", "config/database.yml", "config/sidekiq.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "public", 'tmp/sockets', 'vendor/bundle', 'lib/tasks', 'lib/drop', 'storage'
@@ -48,17 +48,17 @@ namespace :deploy do
   desc 'Initial Deploy'
   task :initial do
     on roles(:app) do
-      before 'deploy:restart', 'puma:start'
+      before 'deploy:restart'#, 'puma:start'
       invoke 'deploy'
     end
   end
 
-  desc 'Restart application'
-    task :restart do
-      on roles(:app), in: :sequence, wait: 5 do
-        invoke 'puma:restart'
-      end
-  end
+  # desc 'Restart application'
+  #   task :restart do
+  #     on roles(:app), in: :sequence, wait: 5 do
+  #       invoke 'puma:restart'
+  #     end
+  # end
 
 #   namespace :sidekiq do  
 #     desc 'Restart Sidekiq'
