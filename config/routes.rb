@@ -1,5 +1,10 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
+  resources :imports do
+    collection do
+      post :run
+    end
+  end
   resources :insales
   devise_for :users
   resources :products do

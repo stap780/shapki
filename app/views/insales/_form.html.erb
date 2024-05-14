@@ -5,21 +5,21 @@
       <div class="row">
         <div class="card">
             <div class="card-body">
-              <div class="row hstack gap-2">
+              <div class="row justify-content-start align-items-center">
 
-                <div class="col-3 row">
+                <div class="col-3 px-1">
                   <%= f.text_field :api_key, class: "form-control", placeholder: "api_key" %>
                 </div>
 
-                <div class="col-3 row">
+                <div class="col-3 px-1">
                   <%= f.text_field :api_password, class: "form-control", placeholder: "api_password" %>
                 </div>
-                <div class="col-4 row">
+                <div class="col-3 px-1">
                   <%= f.text_field :api_link, class: "form-control", placeholder: "api_link" %>
                 </div>
 
                 <div class="col d-flex justify-content-end gap-2 align-items-center">
-                  <%= f.submit class: "btn btn-primary" %>
+                  <%= f.submit t('save'), class: "btn btn-primary" %>
                   <%= link_to close_icon, :back, class: "btn btn-outline-primary" %>
                 </div>
 

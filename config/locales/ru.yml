@@ -1,5 +1,6 @@
-en:
+ru:
   hello: "Hello world"
+  save: "сохранить"
   activerecord:
     attributes:
       product:
@@ -27,6 +28,15 @@ en:
       variant: 
         one: "вариант"
         other: "Варианты"
+      import: 
+        one: "импорт"
+        other: "Импорты"
+      insale: 
+        one: "инсалес"
+        other: "Инсалес"
+      user: 
+        one: "пользователь"
+        other: "Пользователи"
     errors:
       format: "%{attribute} %{message}"
       messages:
