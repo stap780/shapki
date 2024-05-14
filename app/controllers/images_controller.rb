@@ -84,7 +84,7 @@ class ImagesController < ApplicationController
       flash.now[:success] = t(".success")
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.append(dom_id(@product, dom_id(@variant, :images)), partial: "images/image", locals: { blob: @blob, image_id: nil, image_position: @blob.id, variant_id: @variant.id, f: nil }),
+          turbo_stream.append(dom_id(@product, dom_id(@variant, :images)), partial: "images/image", locals: { blob: @blob, image_id: nil, image_position: @blob.id, variant_id: @variant.id, f: nil, product_id: @product.id }),
           render_turbo_flash
         ]
       end
