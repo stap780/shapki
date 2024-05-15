@@ -1,5 +1,5 @@
 class ImportsController < ApplicationController
-  before_action :set_import, only: %i[ show edit update destroy ]
+  before_action :set_import, only: %i[ show edit update run destroy ]
 
   # GET /imports or /imports.json
   def index
@@ -57,6 +57,18 @@ class ImportsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to imports_url, notice: "Import was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def run
+    ImportConnectImageJob.perform_later(@import.id)
+    respond_to do |format|
+      flash.now[:success] = t(".success")
+      format.turbo_stream do
+        render turbo_stream: [
+          render_turbo_flash
+        ]
+      end
     end
   end
 

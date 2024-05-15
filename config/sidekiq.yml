@@ -6,6 +6,7 @@
     - reconnect_image
     - load_variants
     - import_variant_images
+    - link_import_image
 
 :scheduler:
   :dynamic: true

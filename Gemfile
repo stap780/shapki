@@ -53,6 +53,7 @@ gem 'nokogiri'
 gem 'ransack'
 gem 'will_paginate', '~> 4.0'
 gem "sidekiq"
+gem "sidekiq-scheduler"
 gem "devise"
 gem "acts_as_list"
 gem "requestjs-rails"
