@@ -80,6 +80,6 @@ class ImportsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def import_params
-      params.require(:import).permit(:title, :link)
+      params.require(:import).permit(:status, :title, :link)
     end
 end

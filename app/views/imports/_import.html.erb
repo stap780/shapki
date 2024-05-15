@@ -1,8 +1,9 @@
 <%= turbo_frame_tag  dom_id(import), class: "card mb-1", data: { }  do %>
   <div class="row justify-content-between align-items-center px-2 py-2">
     <%= tag.div(import.id, class: "col-1 text-center")%>
-    <%= tag.div(import.title, class: "col-4")%>
-    <%= tag.div(class: "col-2") do %>
+    <%= tag.div(import.status, class: "col-1")%>
+    <%= tag.div(import.title, class: "col-3")%>
+    <%= tag.div(class: "col-4") do %>
       <%= "Link: #{import.link}" %>
       <%= "File: #{import.file}" if import.file.attached?%>
     <% end %>
