@@ -11,9 +11,13 @@
             <span class="fs-4"><%=link_to box_arrow_up_right_icon, "https://myshop-bcp747.myinsales.ru/admin2/products/#{product.uid}", target: "_blank" %></span>
           </div>
           <div class="d-flex justify-content-end gap-2 align-items-center">
-            <%= link_to load_variants_product_path(product), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_stream: true }, title: "Загрузить варианты" do %>
-                <%= download_icon %>
+            <%= link_to load_variants_products_path(product_ids: [product.id]), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_method: :post}, title: "Загрузить варианты" do %>
+                <i class="bi bi-clouds"></i>
             <% end if !product.new_record? %>
+            <%= link_to '<i class="bi bi-file-arrow-down"></i>'.html_safe, load_variants_images_product_path(product, variant_ids: product.variants.pluck(:id) ), 
+                                title: "Импортировать картинки", 
+                                data: { "turbo-method": :get, 'turbo-confirm': 'Импортировать картинки?', turbo_stream: true }, 
+                                class:"btn btn-outline-secondary" if !product.new_record? && product.variants.present? %>
           </div>
           <div class="d-flex justify-content-end gap-2 align-items-center">
             <%= f.submit t('save'), class: "btn btn-primary", data: {turbo_frame: "_top"}%>

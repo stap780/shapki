@@ -85,7 +85,7 @@ class Product < ApplicationRecord
 
     def variants_images_size
       return '' unless self.variants
-      self.variants.map(&:images).flatten.size
+      self.variants.includes(:images).map(&:images).flatten.size
     end
 
     private

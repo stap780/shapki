@@ -25,9 +25,14 @@
           <span class="visually-hidden"></span>
         </span>
       <% end %>
-      <%= link_to download_icon, load_xml_data_products_path, class: 'btn btn-outline-primary', title: "'Импортировать товары из xml", data: {turbo_stream: true, 'turbo-confirm': 'Импортировать товары из xml?'} %>
-      <%= form_with url: run_products_path, method: :post, id: :bulk_form  do |f| %>
-        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "соединить" do %>
+      <%= link_to download_icon, load_xml_data_products_path, class: 'btn btn-outline-primary', title: "Импортировать товары из xml", data: {turbo_stream: true, 'turbo-confirm': 'Импортировать товары из xml?'} %>
+      <%= form_with url: load_variants_products_path, method: :post, id: :bulk_form  do |f| %>
+        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "загрузить варианты" do %>
+          <i class="bi bi-clouds"></i>
+        <% end%>
+      <%# end %>
+      <%# form_with url: run_products_path, method: :post, id: :bulk_form  do |f| %>
+        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "соединить", formaction: run_products_path do %>
           <%= play_icon %>
         <% end%>
       <% end %>
@@ -60,9 +65,8 @@
           <% end %>
         </div>
 
-      <div class="row paginate-wrap mt-4">
-        <%= render "shared/paginate", f: @products %>
-      </div>
+
+      <%= will_paginate @products, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, list_classes: %w(pagination justify-content-end my-4) %>
 
     </div>
   </div>

@@ -11,18 +11,19 @@
     <%= tag.div(variant.price, class: "col-2")%>
     <%= tag.div("#{variant.images.size} шт", class: "col-1")%>
     <div class= "col d-flex justify-content-end gap-2 align-items-center" id="<%= dom_id(product, dom_id(variant, :buttons))%>" >     
- 
-      <%# form_with url: [:load_images, product, variant], method: :get, data: {turbo_stream: true}  do |f| %>
-        <%# hidden_field_tag 'variant_ids[]', variant.id %>
-        <%# f.button type: :submit, class: "btn btn-sm btn-outline-secondary", title: "Download images", data: {'turbo-confirm': 'Download images?'} do %>
-          <%# download_icon %>
-        <%# end%>
-      <%# end %>
-      <%= link_to download_icon, load_images_product_variant_path(product, variant, variant_ids: [variant.id] ), title: "Импортировать картинки", data: { "turbo-method": :get, 'turbo-confirm': 'Импортировать картинки?', turbo_stream: true }, class:"btn btn-sm btn-outline-secondary" %>
-      <%= link_to arrow_right_icon, run_product_variants_path(product, variant_ids: [variant.id] ), title: "Экспортировать картинки", data: { "turbo-method": :post, 'turbo-confirm': 'Экспортировать картинки в магазин?' }, class:"btn btn-sm btn-outline-secondary" %>
+      <% if variant.status == "Process" %>
+        <%= render 'shared/running'%>
+      <% else %>
+        <%= link_to '<i class="bi bi-file-arrow-down"></i>'.html_safe, load_variants_images_product_path(product, variant_ids: [variant.id] ), 
+                    title: "Импортировать картинки", data: { "turbo-method": :get, 'turbo-confirm': 'Импортировать картинки?', turbo_stream: true }, 
+                    class:"btn btn-sm btn-outline-secondary" %>
+        <%= link_to arrow_right_icon, run_product_variants_path(product, variant_ids: [variant.id] ), 
+                    title: "Экспортировать картинки", data: { "turbo-method": :post, 'turbo-confirm': 'Экспортировать картинки в магазин?' }, 
+                    class:"btn btn-sm btn-outline-secondary" %>
 
-      <%= link_to edit_icon, [:edit, product, variant], class: '' %>
-      <%= link_to trash_icon, [product,variant], data: { "turbo-method": :delete, 'turbo-confirm': 'Are you sure?' }, class:"" %>
+        <%= link_to edit_icon, [:edit, product, variant], class: '' %>
+        <%= link_to trash_icon, [product,variant], data: { "turbo-method": :delete, 'turbo-confirm': 'Are you sure?' }, class:"" %>
+      <% end %>
     </div>
   </div>
 <% end %>

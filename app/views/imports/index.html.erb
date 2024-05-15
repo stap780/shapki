@@ -37,9 +37,7 @@
           <% end %>
         </div>
 
-      <div class="row paginate-wrap mt-4">
-        <%= render "shared/paginate", f: @imports %>
-      </div>
+      <%= will_paginate @imports, renderer: WillPaginate::ActionView::BootstrapLinkRenderer, list_classes: %w(pagination justify-content-end my-4) %>
 
     </div>
   </div>

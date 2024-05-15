@@ -21,15 +21,16 @@ Rails.application.routes.draw do
       end
       member do
         patch :sort_image
-        get :load_images
       end
     end
     collection do
       post :run
+      post :load_variants
       get :load_xml_data
     end
     member do
-      get :load_variants
+      get :load_variants_images
+      # get :load_variants
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

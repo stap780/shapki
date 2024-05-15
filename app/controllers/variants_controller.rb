@@ -1,7 +1,7 @@
 class VariantsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_product
-  before_action :set_variant, only: %i[ show edit update load_images destroy ]
+  before_action :set_variant, only: %i[ show edit update destroy ]
   include ActionView::RecordIdentifier
 
   # GET /variants or /variants.json
@@ -163,33 +163,6 @@ class VariantsController < ApplicationController
     # @image = @product.images.find_by_id(params[:sort_item_id])
     # @image.insert_at params[:new_position]
     head :ok
-  end
-
-  def load_images
-    if params[:variant_ids]
-      params[:variant_ids].each do |variant_id|
-        # @product.variants.find_by_id(variant_id).update!(status: "Process")
-        ApiImportVariantImagesJob.perform_later(@product.id, variant_id)
-        respond_to do |format|
-          flash.now[:success] = t(".success")
-          format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.update( "buttons_variant_#{variant_id}_product_#{@product.id}", partial: 'shared/run' ),
-              render_turbo_flash
-            ]
-          end
-        end
-      end
-    else
-      respond_to do |format|
-        flash.now[:alert] = "Выберите позиции"
-        format.turbo_stream do
-          render turbo_stream: [
-            render_turbo_flash
-          ]
-        end
-      end
-    end
   end
 
   def run

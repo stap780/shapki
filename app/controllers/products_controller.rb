@@ -1,12 +1,12 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_product, only: %i[ show edit update load_variants destroy]
+  before_action :set_product, only: %i[ show edit update load_variants_images destroy]
 
   # GET /products or /products.json
   def index
     @search = Product.ransack(params[:q])
     @search.sorts = "id asc" if @search.sorts.empty?
-    @products = @search.result(distinct: true).includes(:variants).paginate(page: params[:page], per_page: 100)
+    @products = @search.result(distinct: true).includes(variants: :images).paginate(page: params[:page], per_page: 100)
   end
 
   # GET /products/1 or /products/1.json
@@ -80,15 +80,15 @@ class ProductsController < ApplicationController
   def run
     if params[:product_ids]
       params[:product_ids].each do |product_id|
-        Product.find_by_id(product_id).update!(status: "Process")
+        Product.find_by_id(product_id).update(status: "Process")
         ReconnectImageToVariantJob.perform_later(product_id)
-        respond_to do |format|
-          flash.now[:success] = t(".success")
-          format.turbo_stream do
-            render turbo_stream: [
-              render_turbo_flash
-            ]
-          end
+      end
+      respond_to do |format|
+        flash.now[:success] = t(".success")
+        format.turbo_stream do
+          render turbo_stream: [
+            render_turbo_flash
+          ]
         end
       end
     else
@@ -98,14 +98,49 @@ class ProductsController < ApplicationController
   end
 
   def load_variants
-    ApiLoadVariantsJob.perform_later(@product.id)
-    respond_to do |format|
-      flash.now[:success] = t(".success")
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.update('modal',template: "shared/pending"),
-          render_turbo_flash
-        ]
+    if params[:product_ids]
+      params[:product_ids].each do |product_id|
+        Product.find_by_id(product_id).update(status: "Process")
+        ApiLoadVariantsJob.perform_later(product_id)
+      end
+      respond_to do |format|
+        flash.now[:success] = t(".success")
+        format.turbo_stream do
+          render turbo_stream: [
+            # turbo_stream.update('modal',template: "shared/pending"),
+            render_turbo_flash
+          ]
+        end
+      end
+    else
+      notice = "Выберите позиции"
+      redirect_to products_url, alert: notice
+    end
+  end
+
+  def load_variants_images
+    if params[:variant_ids]
+      respond_to do |format|
+        flash.now[:success] = t(".success")
+        format.turbo_stream do
+          render turbo_stream: [
+            # turbo_stream.update( "buttons_variant_#{variant_id}_product_#{@product.id}", partial: 'shared/run' ),
+            render_turbo_flash
+          ]
+        end
+      end
+      params[:variant_ids].each do |variant_id|
+        @product.variants.find_by_id(variant_id).update(status: "Process")
+        ApiImportVariantImagesJob.perform_later(@product.id, variant_id)
+      end
+    else
+      respond_to do |format|
+        flash.now[:alert] = "Выберите позиции"
+        format.turbo_stream do
+          render turbo_stream: [
+            render_turbo_flash
+          ]
+        end
       end
     end
   end

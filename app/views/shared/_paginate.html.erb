@@ -1,8 +1,9 @@
-<div class="col-sm-12 col-md-5">
-    <div class="dataTables_info" role="status" aria-live="polite"> <%= page_entries_info f if f.size > 0 %></div>
-</div>
-<div class="col-sm-12 col-md-7">
-    <div class="dataTables_paginate paging_simple_numbers">
+
+<div class="row paginate-wrap d-flex py-4 px-0 justify-content-between align-items-center">
+    <div class="col-12 col-md-3">
+        <div class="dataTables_info" role="status" aria-live="polite"> <%= page_entries_info f if f.size > 0 %></div>
+    </div>
+    <div class="col-12 col-md-9 d-flex justify-content-end align-items-center">
         <%= bs_will_paginate f if f.size > 0 %>
     </div>
 </div>

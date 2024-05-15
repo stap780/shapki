@@ -10,7 +10,7 @@ class ApiLoadVariants < ApplicationService
     def call
       puts "ApiLoadVariants call"
       download_variants
-      !@message.present? ? ["all_good"] : @message
+      !@message.present? ? [true, "all_good"] : [false, @message]
     end
   
     private

@@ -13,6 +13,7 @@ class ApiImportVariantImages < ApplicationService
         @images_attributes = []
         ins_variant = InsalesApi::Variant.find(@variant.uid, params: {product_id: @product.uid})
         @images = ins_variant.image_ids
+        @message = []
     end
   
     def call
@@ -20,6 +21,9 @@ class ApiImportVariantImages < ApplicationService
       if @images.present?
         io_image
         add_images_to_variant
+        !@message.present? ? [true, "all_good"] : [false, @message]
+      else
+        [false, @message]
       end
       # clear_tmp_folder
     end
