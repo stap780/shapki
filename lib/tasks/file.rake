@@ -1,4 +1,6 @@
 namespace :file do
+    require 'zip'
+    
     desc "work file"
     task create_log_zip_every_day: :environment do
           puts "start create_log_zip_every_day"
