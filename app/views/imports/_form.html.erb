@@ -4,6 +4,7 @@
       <%= form_with(model: import) do |f| %>
         <%= render 'shared/errors', object: import %>
         <div class="row justify-content-start align-items-center">
+          
           <%= tag.div( f.object.id , class: "col") if !f.object.new_record?%>
 
           <div class="col-2 px-1">
