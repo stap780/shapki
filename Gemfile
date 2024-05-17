@@ -61,6 +61,7 @@ gem "addressable"
 gem "aws-sdk-s3", require: false
 gem "rack-cors"
 gem 'will_paginate-bootstrap-style' #https://github.com/delef/will_paginate-bootstrap-style
+gem 'rubyzip'
 
 
 

@@ -28,6 +28,13 @@ class ImportsController < ApplicationController
 
     respond_to do |format|
       if @import.save
+        flash.now[:success] = t(".success")
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(Import.new, ''),
+            render_turbo_flash
+          ]
+        end
         format.html { redirect_to import_url(@import), notice: "Import was successfully created." }
         format.json { render :show, status: :created, location: @import }
       else
@@ -41,6 +48,12 @@ class ImportsController < ApplicationController
   def update
     respond_to do |format|
       if @import.update(import_params)
+        flash.now[:success] = t(".success")
+        format.turbo_stream do
+          render turbo_stream: [
+            render_turbo_flash
+          ]
+        end
         format.html { redirect_to import_url(@import), notice: "Import was successfully updated." }
         format.json { render :show, status: :ok, location: @import }
       else
@@ -55,6 +68,12 @@ class ImportsController < ApplicationController
     @import.destroy!
 
     respond_to do |format|
+      flash.now[:success] = t(".success")
+      format.turbo_stream do
+        render turbo_stream: [
+          render_turbo_flash
+        ]
+      end
       format.html { redirect_to imports_url, notice: "Import was successfully destroyed." }
       format.json { head :no_content }
     end
@@ -62,6 +81,7 @@ class ImportsController < ApplicationController
 
   def run
     ImportConnectImageJob.perform_later(@import.id)
+    @import.update(status: "Process")
     respond_to do |format|
       flash.now[:success] = t(".success")
       format.turbo_stream do
@@ -80,6 +100,6 @@ class ImportsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def import_params
-      params.require(:import).permit(:status, :title, :link)
+      params.require(:import).permit(:status, :title, :link, :file)
     end
 end

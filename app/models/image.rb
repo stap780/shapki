@@ -27,7 +27,7 @@ class Image < ApplicationRecord
   end
 
   def full_url
-    host = Rails.env.development? ? "http://localhost:3000" : "https://app.shapki.ru"
+    host = Rails.env.development? ? "http://localhost:3000" : "https://app.%D1%88%D0%B0%D0%BF%D0%BB%D0%B0%D0%BD%D0%B4%D0%B8%D1%8F.%D1%80%D1%84"
     host+rails_blob_path(self.file, only_path: true) if self.file.attached?
   end
 

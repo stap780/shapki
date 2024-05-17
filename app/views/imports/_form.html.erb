@@ -4,10 +4,10 @@
       <%= form_with(model: import) do |f| %>
         <%= render 'shared/errors', object: import %>
         <div class="row justify-content-start align-items-center">
-          <%=tag.div( f.object.id , class: "col-1") if !f.object.new_record?%>
+          <%= tag.div( f.object.id , class: "col") if !f.object.new_record?%>
 
-          <div class="col-2">
-            <%= f.label :status, style: "display: block" %>
+          <div class="col-2 px-1">
+            <%# f.label :status, style: "display: block" %>
             <%= f.select :status, Import::STATUS, {include_blank: false, prompt: "Select"}, {:class => "form-select"} %>
           </div>
 
@@ -18,7 +18,8 @@
 
           <div class="col-4 px-1">
             <%# f.label :link, class: "col-form-label" if f.object.new_record?%>
-            <%= f.text_field :link, class: "form-control" %>
+            <%# f.text_field :link, class: "form-control" %>
+            <%= f.file_field :file, multiple: false, direct_upload: true %>
           </div>
 
           <div class="my-3 col d-flex justify-content-end gap-2 align-items-center">
