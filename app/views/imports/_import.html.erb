@@ -5,13 +5,14 @@
     <%= tag.div(class: "col-4") do %>
       <%# "Link: #{import.link}" %>
       <%=link_to 'file', rails_blob_path(import.file, disposition: "attachment") if import.file.attached? %>
+      <%= "Size: #{number_to_human_size(import.file.byte_size)}" if import.file.attached?%>
     <% end %>
     <div class= "col d-flex justify-content-end gap-2 align-items-center" id="<%= dom_id(import, :buttons)%>" >
       <% if import.status == "Process" %>
         <%= render 'shared/running'%>
       <% else %> 
-        <%= link_to arrow_right_icon, run_imports_path(import), title: "Run", 
-          data: { "turbo-method": :post, 'turbo-confirm': 'Run' }, class:"btn btn-sm btn-outline-secondary" %>
+        <%= link_to play_icon, run_import_path(import), title: "Run", 
+          data: { "turbo-method": :post, 'turbo-confirm': 'Run' }, class:"btn btn-sm btn-outline-secondary" if import.file.attached? %>
         <%= link_to edit_icon, [:edit, import], class: '' %>
         <%= link_to trash_icon, [import], data: { "turbo-method": :delete, 'turbo-confirm': 'Are you sure?' }, class:"" %>
       <% end %>

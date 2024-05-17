@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
   resources :imports do
-    collection do
+    member do
       post :run
     end
   end

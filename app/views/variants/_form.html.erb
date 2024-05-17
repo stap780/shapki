@@ -4,27 +4,31 @@
   <%= form_with(model: [@product, variant]) do |f| %>
     <%= render 'shared/errors', object: variant %>
     <div class="row">
-      <div class="col-2">
+      <div class="col-2 px-1">
         <%= f.label :status, style: "display: block" %>
         <%= f.select :status, Variant::STATUS, {include_blank: false, prompt: "Select"}, {:class => "form-select"} %>
       </div>
 
-      <div class="col-3">
+      <div class="col-2 px-1">
         <%= f.label :uid%>
         <%= f.number_field :uid, class: "form-control disabled", readonly: true, placeholder: "uid" %>
       </div>
 
-      <div class="col-3">
+      <div class="col-2 px-1">
         <%= f.label :sku %>
         <%= f.text_field :sku, class: "form-control"%>
       </div>
+      <div class="col-2 px-1">
+        <%= f.label :barcode %>
+        <%= f.text_field :barcode, readonly: true, class: "form-control disabled"%>
+      </div>
 
-      <div class="col-2">
+      <div class="col-2 px-1">
         <%= f.label :quantity, style: "display: block" %>
         <%= f.number_field :quantity, class: "form-control" %>
       </div>
 
-      <div class="col-2">
+      <div class="col-2 px-1">
         <%= f.label :price, style: "display: block" %>
         <%= f.text_field :price, class: "form-control"%>
       </div>
