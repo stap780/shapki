@@ -8,7 +8,7 @@
       <%= "Size: #{number_to_human_size(import.file.byte_size)}" if import.file.attached?%>
     <% end %>
     <div class= "col d-flex justify-content-end gap-2 align-items-center" id="<%= dom_id(import, :buttons)%>" >
-      <% if import.status == "Process" %>
+      <% if import.status != "new" && import.status != "finish" && import.status != "error" %>
         <%= render 'shared/running'%>
       <% else %> 
         <%= link_to play_icon, run_import_path(import), title: "Run", 

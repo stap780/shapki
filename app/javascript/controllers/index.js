@@ -24,3 +24,6 @@ application.register("selectall", SelectallController)
 
 import SortableController from "./sortable_controller"
 application.register("sortable", SortableController)
+
+import UploadController from "./upload_controller"
+application.register("upload", UploadController)

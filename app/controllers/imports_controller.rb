@@ -81,7 +81,6 @@ class ImportsController < ApplicationController
 
   def run
     ImportConnectImageJob.perform_later(@import.id)
-    @import.update(status: "Process")
     respond_to do |format|
       flash.now[:success] = t(".success")
       format.turbo_stream do
@@ -91,6 +90,7 @@ class ImportsController < ApplicationController
       end
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

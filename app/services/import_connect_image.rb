@@ -22,14 +22,17 @@ class ImportConnectImage < ApplicationService
     def create_tmp_folder
         folder =  Rails.root.join("public", "import_#{@import.id.to_s}")
         FileUtils.mkdir_p(folder)
+        @import.update(status: "create_tmp_folder") 
         folder
     end
 
     def remove_tmp_folder
         FileUtils.remove_dir(@destination)
+        @import.update(status: "remove_tmp_folder") 
     end
 
     def process
+        @import.update(status: "process") 
         @files_path.each do |link|
             hash = {}
             file_name = File.basename(link)
@@ -61,6 +64,7 @@ class ImportConnectImage < ApplicationService
                 end
             end
         end
+        @import.update(status: "extract_zip") 
     end
 
 end

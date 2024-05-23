@@ -30,7 +30,7 @@ export default class extends Controller {
 
 class DirectUploadController {
   constructor(file, url, uploadPath) {
-    console.log('DirectUploadController');
+    // console.log('DirectUploadController');
     this.directUpload = this.createDirectUpload(file, url, this);
     this.file = file;
     this.uploadPath = uploadPath;
@@ -58,6 +58,10 @@ class DirectUploadController {
 
   directUploadDidProgress(event) {
     // Use event.loaded and event.total to update the progress bar
+    // console.log(event.loaded, event.total);
+    // const percentage = (event.loaded / event.total) * 100;
+    // const progress = document.querySelector(`#upload_${this.directUpload.id} .progress`);
+    // progress.style.transform = `translateX(-${100 - percentage}%)`;
   }
 
   createDirectUpload(file, url, controller) {

@@ -2,11 +2,11 @@ class ImportConnectImageJob < ApplicationJob
     queue_as :link_import_image
   
     def perform(import_id)
-      # Do something later
         import = Import.find_by_id(import_id)
+        import.update(status: "start_job")
         success, message = ImportConnectImage.call(import_id)
         if success
-            import.update(status: "Finish")    
+            import.update(status: "finish")    
             # Turbo::StreamsChannel.broadcast_update_to(
             #     product,
             #     target: "modal",
@@ -15,7 +15,7 @@ class ImportConnectImageJob < ApplicationJob
             #     html: message.join('<br>').html_safe
             # )
         else
-            import.update(status: "Error")
+            import.update(status: "error")
         end
     end
 end 

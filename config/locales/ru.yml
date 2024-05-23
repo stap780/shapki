@@ -1,6 +1,7 @@
 ru:
   hello: "Hello world"
   save: "сохранить"
+  add: "добавить"
   activerecord:
     attributes:
       product:
@@ -101,10 +102,21 @@ ru:
       success: Загрузили
     load_images:
       success: Импортируем картинки
+    update:
+      success: Обновили!
     run:
       success: Экспортируем картинки
     delete_image:
       success: Удалили!
+    destroy:
+      success: Удалили!
+  imports:
+    create:
+      success: Создали!
+    update:
+      success: Обновили!
+    run:
+      success: Запустили
     destroy:
       success: Удалили!
   helpers:

@@ -8,7 +8,7 @@ class Import < ApplicationRecord
     include ActionView::RecordIdentifier
     include Rails.application.routes.url_helpers
 
-    STATUS = ["New","Process","Finish","Error"]
+    STATUS = ["new","start_job","create_tmp_folder","extract_zip","process","remove_tmp_folder","finish","error"]
 
     def self.ransackable_attributes(auth_object = nil)
         Import.attribute_names

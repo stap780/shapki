@@ -1,6 +1,9 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
   resources :imports do
+    collection do
+
+    end
     member do
       post :run
     end
@@ -16,7 +19,7 @@ Rails.application.routes.draw do
       end
       resources :images do
         collection do
-          post :upload # if we have variant
+          post :upload # if variant not new
         end
       end
       member do

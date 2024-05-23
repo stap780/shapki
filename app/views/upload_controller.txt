@@ -1,0 +1,93 @@
+import { Controller } from "@hotwired/stimulus"
+import { DirectUpload } from "@rails/activestorage"
+
+// Connects to data-controller="upload"
+export default class extends Controller {
+  static targets = ["input", "form","progress", "progressText", "progressWidth"];
+
+  connect() {
+    
+    this.element.addEventListener("direct-upload:progress", () => {
+      console.log('Element progress!')
+      this.updateProgress.bind(this)
+    })
+    
+    this.element.addEventListener("direct-upload:error", event => {
+      event.preventDefault()
+      const { id, error } = event.detail
+      console.log(error)
+    })    
+    console.log("upload connect")
+    console.log("upload connect this.element", this.element)
+  }
+  
+  go(event){
+    const input = this.inputTarget;
+    const url = input.dataset.directUploadUrl;
+
+    Array.from(input.files).forEach( file => this.createUpload(file, url).start() )
+
+    // you might clear the selected files from the input
+    input.value = null
+  }
+
+  createUpload(file, url) {
+    console.log("createUpload");
+    return new Uploader(file, url);
+  }
+
+  showProgress() {
+    this.progressTarget.style.display = "block"
+  }
+
+  updateProgress() {
+    const { id, progress } = event.detail
+    this.progressWidthTarget.style.width = `${Math.round(progress)}%`
+    this.progressTextTarget.innerHTML = `${Math.round(progress)}% complete`
+  }
+
+  disconnect() {
+    this.element.removeEventListener("direct-upload:progress", this.updateProgress)
+  }
+
+
+}
+
+  class Uploader {
+    constructor(file, url) {
+      console.log("Uploader");
+      this.upload = new DirectUpload(file, url, this)
+    }
+
+
+    start(file) {
+      console.log("upload file");
+
+      this.upload.create((error, blob) => {
+        if (error) {
+          // Handle the error
+          console.log("start(file) error", error);
+        } else {
+          // Add an appropriately-named hidden input to the form
+          // with a value of blob.signed_id
+          const hiddenField = document.createElement('input')
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("value", blob.signed_id);
+          hiddenField.name = "import[file]"; //this.inputTarget.name
+          // this.formTarget.appendChild(hiddenField)
+          document.querySelector('form.new_import').appendChild(hiddenField)
+        }
+      })
+    }
+
+    directUploadWillStoreFileWithXHR(request) {
+      request.upload.addEventListener("progress",
+        event => this.directUploadDidProgress(event))
+    }
+
+    directUploadDidProgress(event) {
+      // Use event.loaded and event.total to update the progress bar
+      console.log(event.loaded, event.total);
+    }
+  }
+
