@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_15_181146) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_23_075858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,7 +57,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_181146) do
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status", default: "New", null: false
+    t.string "status", default: "new", null: false
   end
 
   create_table "insales", force: :cascade do |t|
