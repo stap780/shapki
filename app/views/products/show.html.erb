@@ -1,10 +1,54 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @product %>
-
-<div>
-  <%= link_to "Edit this product", edit_product_path(@product) %> |
-  <%= link_to "Back to products", products_path %>
-
-  <%= button_to "Destroy this product", @product, method: :delete %>
+<%= turbo_stream_from "product_#{@product.id}_show" if !@product.new_record?%>
+<div class="card my-4">
+  <div class="card-header bg-transparent">
+    <%= render 'inline_form', product: @product%>
+  </div>
+    <div class="card-body">
+      <div class="my-2 d-flex justify-content-center gap-2">
+        <%= search_form_for @search, url: product_path(@product), html: {
+                            data: { "turbo-method": :get, 'turbo-frame': @product, turbo_stream: true },
+                            class: 'form-inline pl-0 pr-0 z-0'} do |f| %>
+          <div class="input-group">
+            <%= f.text_field :barcode_cont , placeholder: 'barcode', class: "form-control"%>
+            <%= button_tag(type: 'submit', :class => "btn btn-outline-primary") do %><%= search_icon %><% end %>
+            <%= link_to arrow_clockwise_icon, product_path(@product), class: 'btn btn-outline-dark d-flex justify-content-center align-items-center' %>
+          </div>
+        <% end %>
+        <%= link_to load_variants_products_path(product_ids: [@product.id]), class: "btn btn-outline-secondary float-start ms-2", data: {turbo_method: :post}, title: "Загрузить варианты" do %>
+            <i class="bi bi-clouds"></i>
+        <% end if !@product.new_record? %>
+        <%= link_to '<i class="bi bi-file-arrow-down"></i>'.html_safe, load_variants_images_product_path(@product, variant_ids: @product.variants.pluck(:id) ), 
+                            title: "Импортировать картинки", 
+                            data: { "turbo-method": :get, 'turbo-confirm': 'Импортировать картинки?', turbo_stream: true }, 
+                            class:"btn btn-outline-secondary" if !@product.new_record? && @product.variants.present? %>
+        <%= link_to arrow_right_icon, run_product_variants_path(@product, variant_ids: @product.variants.pluck(:id) ), 
+                    title: "Экспортировать картинки", data: { "turbo-method": :post, 'turbo-confirm': 'Экспортировать картинки в магазин?' }, 
+                    class:"btn btn-outline-secondary" if !@product.new_record? && @product.variants.present? %>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+        <%= turbo_stream_from @product, :variants if !@product.new_record? %>
+        <div class="col-12">
+            <%= turbo_frame_tag dom_id(@product, dom_id(Variant.new)) %>
+        </div>
+        <% if @product.variants %>
+          <div class="row justify-content-between align-items-center px-2 py-2">
+            <%= tag.div("#", class: "col-1 fw-bold text-center")%>
+            <%= tag.div("status", class: "col-1 fw-bold")%>
+            <%= tag.div("uid", class: "col-2 fw-bold")%>
+            <%= tag.div("", class: "col-2 fw-bold")%>
+            <%= tag.div("qt", class: "col-1 fw-bold")%>
+            <%= tag.div("price", class: "col-2 fw-bold")%>
+            <%= tag.div("img", class: "col-1 fw-bold")%>
+            <%= tag.div("", class: "col")%>
+          </div>
+        <% end %>
+        <%= turbo_frame_tag @product, :variants, data: { } do %>
+            <% @variants.each do |variant|%>
+                <%= render partial: "variants/variant", locals: { variant: variant, product: @product } %>
+            <% end if !@product.new_record? %>
+        <% end %>
+        </div>
+      </div>
+    </div>
 </div>

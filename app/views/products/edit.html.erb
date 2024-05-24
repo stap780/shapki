@@ -1,2 +1,5 @@
-<%= render "form", product: @product, title: "Редактировать" %>
-
+<% if params[:attribute].present? %>
+  <%= render "inline_form", product: @product%>
+<% else %>
+  <%= render "form", product: @product, title: "Редактировать" %>
+<% end %>

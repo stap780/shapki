@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
     require "open-uri"
+    include ActionView::RecordIdentifier
     has_many :variants, dependent: :destroy
     accepts_nested_attributes_for :variants, allow_destroy: true
     
@@ -8,10 +9,15 @@ class Product < ApplicationRecord
 
     after_create_commit { broadcast_prepend_to "products" }
     after_update_commit { broadcast_replace_to "products" }
+    after_update_commit { broadcast_replace_to "product_#{self.id}_show", target: dom_id(self,:show), partial: 'products/inline_form', locals: {product: self} }
 
     validates :title, presence: true
     validates :uid, presence: true
     validates :uid, uniqueness: true
+
+    scope :have_variants_whithout_images, -> {joins(:variants).merge(Variant.without_images).distinct}
+    scope :have_variants_with_not_sync_images, -> {joins(:variants).merge(Variant.with_not_sync_images).distinct}
+
 
     XML_URL = "https://xn--80aamqmnl4e8c.xn--p1ai/marketplace/4234280.xml"
     STATUS = ["New","Process","Finish","Error"]
@@ -24,6 +30,10 @@ class Product < ApplicationRecord
       ["variants"]
     end
     
+    def self.ransackable_scopes(auth_object = nil)  # Product.ransack({have_variants_whithout_images: true}).result.count
+      [:have_variants_whithout_images, :have_variants_with_not_sync_images]
+    end
+
     def self.load_xml_data
         file = "#{Rails.public_path}"+"/shapki.xml"
         File.delete(file) if File.file?(file)

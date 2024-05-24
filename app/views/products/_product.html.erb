@@ -22,7 +22,10 @@
             <%= f.button type: :submit, class: "btn btn-outline-secondary btn-sm", title: "соединить" do %>
               <%= play_icon %>
             <% end%>
-        <% end if product.status != "Finish" %>
+        <% end if product.status == "switch off" %>
+        <%= link_to arrow_right_icon, run_product_variants_path(product, variant_ids: product.variants.pluck(:id) ), 
+                      title: "Экспортировать картинки", data: { "turbo-method": :post, 'turbo-confirm': 'Экспортировать картинки в магазин?' }, 
+                      class:"btn btn-sm btn-outline-secondary" if !product.new_record? && product.variants.present? %>
 
         <%= render 'shared/edit_delete_link', object: product %>
       <% end %>

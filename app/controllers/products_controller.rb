@@ -11,6 +11,9 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
+    @search = @product.variants.ransack(params[:q])
+    @search.sorts = "id asc" if @search.sorts.empty?
+    @variants = @search.result(distinct: true).includes(:images).paginate(page: params[:page], per_page: 100)
   end
 
   # GET /products/new
@@ -42,8 +45,8 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1 or /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params)
-        # format.turbo_stream { flash.now[:success] = t(".success") }
+      if @product.update!(product_params)
+        format.turbo_stream { flash.now[:success] = t(".success") }
         format.html { redirect_to products_url, notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else

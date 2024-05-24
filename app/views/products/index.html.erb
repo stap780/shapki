@@ -12,6 +12,15 @@
           <%= f.text_field :title_cont , placeholder: 'название', class: "form-control"%>
           <%= f.text_field :variants_barcode_cont , placeholder: 'штрихкод', class: "form-control"%>
           <%# f.select :retail_client_uid_eq, Order.client_list, { :include_blank => true }, :class => "form-select"%>
+          <div class="btn-group" role="group" aria-label="">
+            <div class="btn-group" role="group">
+              <button id="dropdownId" type="button" class="form-control dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Картинки</button>
+              <div class="dropdown-menu checkboxes1" aria-labelledby="dropdownId">
+                <div class="p-1"><%= f.label :have_variants_with_not_sync_images do %><%= f.check_box :have_variants_with_not_sync_images %> есть не синхр<% end %></div>
+                <div class="p-1"><%= f.label :have_variants_whithout_images do %><%= f.check_box :have_variants_whithout_images %> вар без карт<% end %></div>
+              </div>
+            </div>
+          </div>
           <%= button_tag(type: 'submit', :class => "btn btn-outline-primary") do %><%= search_icon %><% end %>
           <%= link_to arrow_clockwise_icon, products_path, class: 'btn btn-outline-dark d-flex justify-content-center align-items-center' %>
         </div>
@@ -30,14 +39,10 @@
         <%= f.button type: :submit, class: "btn btn-outline-primary", title: "загрузить варианты" do %>
           <i class="bi bi-clouds"></i>
         <% end%>
-      <%# end %>
-      <%# form_with url: run_products_path, method: :post, id: :bulk_form  do |f| %>
-        <%= f.button type: :submit, class: "btn btn-outline-primary", title: "соединить", formaction: run_products_path do %>
-          <%= play_icon %>
-        <% end%>
+        <%# f.button type: :submit, class: "btn btn-outline-primary", title: "соединить", formaction: run_products_path do %>
+          <%# play_icon %>
+        <%# end%>
       <% end %>
-      <%# link_to "#{add_icon} #{Product.model_name.human}".html_safe, 
-      new_product_path, class: "btn btn-primary float-end mt-n1", data: {turbo_frame: dom_id(Product.new) } %>
     </div>
   </div>
   <%= render 'filter', q: @search, title: 'Product filter' %>

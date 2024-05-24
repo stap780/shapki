@@ -9,7 +9,10 @@
     <% end %>
     <%= tag.div(variant.quantity, class: "col-1")%>
     <%= tag.div(variant.price, class: "col-2")%>
-    <%= tag.div("#{variant.images.size} шт", class: "col-1")%>
+    <%= tag.div class: "col-1 text-center" do %>
+      <%= "#{variant.images.size} шт" %> 
+      <%=tag.span('not sync', class: "btn btn-sm disabled bg-danger text-dark bg-opacity-25 border-0") if variant.have_not_sync_images%>
+    <% end %>
     <div class= "col d-flex justify-content-end gap-2 align-items-center" id="<%= dom_id(product, dom_id(variant, :buttons))%>" >     
       <% if variant.status == "Process" %>
         <%= render 'shared/running'%>

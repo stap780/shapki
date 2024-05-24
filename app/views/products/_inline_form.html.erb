@@ -1,0 +1,22 @@
+<%= turbo_frame_tag product, :show do %>
+    <%= form_with(model: product, class: "row align-items-center") do |f| %>
+    <div class="col-1 d-flex justify-content-start">
+        <%= link_to caret_left_icon, products_path, class: "btn btn-outline-success btn-sm", data: {turbo_frame: "_top"} %>
+    </div>
+    <div class="col-2">
+        <%= f.select :status, Product::STATUS, {:include_blank => "Select"}, {:class => "form-select", onchange: 'this.form.requestSubmit()'} %>
+    </div>
+    <div class="col-5">
+        <%= f.text_field :title, class: "form-control disabled", readonly: true, placeholder: "title" %>
+    </div>
+    <div class="col fs-4">
+        <%=link_to box_arrow_up_right_icon, "https://myshop-bcp747.myinsales.ru/admin2/@products/#{product.uid}", target: "_blank" %>
+    </div>
+    <div class="col-2">
+        <%= f.number_field :uid, class: "form-control disabled", readonly: true, placeholder: "uid" %>
+    </div>
+    <div class="col-1 d-flex justify-content-end">
+        <%= link_to close_icon, :back, class: "btn btn-outline-primary", data: {turbo_frame: "_top"} %>
+    </div>
+    <% end %>
+<% end %>

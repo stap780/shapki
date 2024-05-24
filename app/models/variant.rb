@@ -20,10 +20,22 @@ class Variant < ApplicationRecord
     broadcast_remove_to [product, :variants], target: dom_id(product, dom_id(self))
   end
 
+  scope :with_not_sync_images, -> {joins(:images).merge(Image.without_uid).distinct}
+  scope :without_images, -> {where.missing(:images)}
+  scope :with_images, -> {where.associated(:images)}
+
   STATUS = ["New","Process","Finish","Error"]
 
   def self.ransackable_attributes(auth_object = nil)
     Variant.attribute_names
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["images", "product"]
+  end
+
+  def self.ransackable_scopes(auth_object = nil)  # Variant.ransack({with_images: true}).result.count
+    [:with_images, :without_images]
   end
 
   def self.load_variants(product_id)
@@ -45,6 +57,11 @@ class Variant < ApplicationRecord
     images.map do |image|
       image.s3_url
     end
+  end
+
+  def have_not_sync_images
+    return true if self.images.present? && !!self.images.pluck(:uid) # array with empty values => true 
+    false
   end
 
   private
