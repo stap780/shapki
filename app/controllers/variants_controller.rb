@@ -168,7 +168,6 @@ class VariantsController < ApplicationController
   def run
     if params[:variant_ids]
       params[:variant_ids].each do |variant_id|
-        # @product.variants.find_by_id(variant_id).update(status: "Process")
         ApiCreateVariantImageJob.perform_later(@product.id, variant_id)
         respond_to do |format|
           flash.now[:success] = t(".success")

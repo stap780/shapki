@@ -5,7 +5,7 @@ class ApiCreateVariantImage < ApplicationService
         @ins_pr_id = product_uid
         @ins_var_id = variant_uid
         @ins_variant = InsalesApi::Variant.find( variant_uid, params: {product_id:  product_uid} )
-        @error_message = nil
+        @message = []
         @images = images
         @ins_image_ids = []
     end
@@ -17,6 +17,7 @@ class ApiCreateVariantImage < ApplicationService
         add_image_to_insales_product
         set_variants_images
         delete_unattached_blobs
+        !@message.present? ? [true, "all_good"] : [false, @message]
       end
     end
   
