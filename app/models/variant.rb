@@ -60,7 +60,7 @@ class Variant < ApplicationRecord
   end
 
   def have_not_sync_images
-    return true if self.images.present? && !!self.images.pluck(:uid) # array with empty values => true 
+    return true if self.images.present? && !self.images.pluck(:uid).any?(&:nil?) # array with empty values => true 
     false
   end
 
