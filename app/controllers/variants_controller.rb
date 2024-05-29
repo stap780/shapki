@@ -169,14 +169,13 @@ class VariantsController < ApplicationController
     if params[:variant_ids]
       params[:variant_ids].each do |variant_id|
         ApiCreateVariantImageJob.perform_later(@product.id, variant_id)
-        respond_to do |format|
-          flash.now[:success] = t(".success")
-          format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.update( "buttons_variant_#{variant_id}_product_#{@product.id}", partial: 'shared/run' ),
-              render_turbo_flash
-            ]
-          end
+      end
+      respond_to do |format|
+        flash.now[:success] = t(".success")
+        format.turbo_stream do
+          render turbo_stream: [
+            render_turbo_flash
+          ]
         end
       end
     else
