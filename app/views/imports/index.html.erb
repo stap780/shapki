@@ -14,9 +14,8 @@
       <% end %>
     </div>
     <div class="col-4 card-actions d-grid gap-2 d-flex align-items-center justify-content-end">
-      <%= link_to new_import_path, class: "btn btn-primary float-end mt-n1", data: {turbo_frame: dom_id(Import.new) } do %>
-          <%= add_icon %>
-      <% end %>
+      <%= link_to add_icon, new_import_path, class: "btn btn-primary float-end mt-n1", data: {turbo_frame: dom_id(Import.new) } %>
+
     </div>
   </div>
 

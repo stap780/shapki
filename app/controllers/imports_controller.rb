@@ -1,4 +1,5 @@
 class ImportsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_import, only: %i[ show edit update run destroy ]
 
   # GET /imports or /imports.json

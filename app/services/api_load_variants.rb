@@ -18,7 +18,7 @@ class ApiLoadVariants < ApplicationService
     def download_variants
         pr = InsalesApi::Product.find(@ins_id)
         pr.variants.each do |var|
-            variant = @product.variants.where(uid: var.id).first_or_create(uid: var.id, price: var.price, quantity: var.quantity, sku: var.sku, barcode: var.barcode)
+            variant = @product.variants.where(uid: var.id).first_or_create(uid: var.id, price: var.price, quantity: var.quantity.nil? ? 0 : var.quantity, sku: var.sku, barcode: var.barcode)
             @message << (var.id.to_s+" =>"+variant.errors.full_messages.join) if variant.errors.present?
         end
     end
